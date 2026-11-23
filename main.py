@@ -1,3 +1,5 @@
+
+import os
 import discord
 from discord.ext import commands
 
@@ -6,10 +8,11 @@ bot = commands.Bot(command_prefix="!", intents=intents)
 
 @bot.event
 async def on_ready():
-    print(f"Bot is online: {bot.user}")
+    await bot.tree.sync()
+    print(f"Bot online: {bot.user}")
 
-@bot.command()
-async def ping(ctx):
-    await ctx.send("Blox Fruits Bot is online! 🍎")
+@bot.tree.command(name="ping", description="Check if the bot is online")
+async def ping(interaction: discord.Interaction):
+    await interaction.response.send_message("Blox Fruits Bot is online! 🍎")
 
-bot.run("YOUR_BOT_TOKEN")
+bot.run(os.environ["DISCORD_TOKEN"])
